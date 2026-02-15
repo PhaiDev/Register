@@ -300,7 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const finalData = collectData();
 
         try {
-            const response = await fetch('api/form/submit', {
+            const response = await fetch('/api/form/submit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(finalData)

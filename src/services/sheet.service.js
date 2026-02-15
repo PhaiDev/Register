@@ -9,7 +9,7 @@ const GasSheetUrl = "https://script.google.com/macros/s/AKfycbwE6CW3ujLEceOuvhk4
 export const getSheet = async (data) => {
     // Implementation for sending email
     // Example: using nodemailer or email service API
-    const res = await fetch(GasSheetUrl,{
+    const res = await fetch(GasSheetUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
