@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         if (!isValid) UI.showToast('ข้อมูลไม่ครบ', 'กรุณากรอกข้อมูลให้ครบถ้วน', 'error');
-        return true;
+        return isValid;
     }
 
     // --- Data Collection ---
@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Collect 5 Executives
         const president = [];
         for (let i = 0; i < 5; i++) {
-            const inputs = document.querySelectorAll(`[data-role="exec"][data-id="${0}"]`);
+            const inputs = document.querySelectorAll(`[data-role="exec"][data-id="${i}"]`);
             const obj = {};
             inputs.forEach(input => {
                 obj[input.name] = input.value;

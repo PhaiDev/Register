@@ -5,7 +5,7 @@ window.siteConfig = {
     tagline: "สภานักเเรียนโรงเรียนนางรอง 68",
     pr_title: "ข่าวประชาสัมพันธ์",
     pr_content: "กรอกใบรับสมัครสภานักเรียน",
-    email: "nrnova@nangrong.com",
+    email: "stu34682@nangrong.ac.th",
     phone: "02-123-4567",
     address: "โรงเรียนนางรอง อำเภอ นางรอง จังหวัด บุรีรัมย์",
     facebook: "#",
