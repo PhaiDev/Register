@@ -308,15 +308,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const result = await response.json();
             if (result.status === 'success' || result.success) {
-                UI.showToast('สำเร็จ', 'ส่งข้อมูลเรียบร้อยแล้ว กำลังดาวน์โหลดไฟล์...', 'success');
-
-                // Trigger Download if fileID exists
-                if (result.fileID) {
-                    const downloadUrl = `https://docs.google.com/uc?export=download&id=${result.fileID}`;
-                    window.open(downloadUrl, '_blank');
-                }
-
-                setTimeout(() => window.location.href = '/success', 2500); // Increased delay for download to start
+                UI.showToast('สำเร็จ', 'ส่งข้อมูลเรียบร้อยแล้ว', 'success');
+                setTimeout(() => window.location.href = '/success', 2500);
             } else {
                 throw new Error('Server returned error');
             }
