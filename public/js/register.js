@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         if (!isValid) UI.showToast('ข้อมูลไม่ครบ', 'กรุณากรอกข้อมูลให้ครบถ้วน', 'error');
-        return true;
+        return isValid;
     }
 
     // --- Data Collection ---
