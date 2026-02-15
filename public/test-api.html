@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test Page</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #1e1e1e;
+            color: #d4d4d4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="email"] {
+            padding: 8px;
+            width: 300px;
+            border-radius: 4px;
+            border: 1px solid #454545;
+            background: #2d2d2d;
+            color: #d4d4d4;
+        }
+
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: #0e639c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background: #1177bb;
+        }
+
+        button.spam {
+            background: #ce9178;
+            color: black;
+        }
+
+        #log {
+            background: #2d2d2d;
+            padding: 15px;
+            border-radius: 4px;
+            height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            margin-top: 20px;
+            border: 1px solid #454545;
+        }
+
+        .entry {
+            margin-bottom: 5px;
+            border-bottom: 1px solid #3d3d3d;
+            padding-bottom: 5px;
+        }
+
+        .success {
+            color: #b5cea8;
+        }
+
+        .error {
+            color: #f44747;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>API Rate Limit Tester</h1>
+
+        <div class="input-group">
+            <label>Test Email (for PDF delivery):</label>
+            <input type="email" id="testEmail" value="test@example.com" placeholder="Enter email">
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <button onclick="sendRequest()">Send 1 Valid Request</button>
+            <button class="spam" onclick="spamRequests()">Spam 20 Requests</button>
+            <button onclick="document.getElementById('log').innerHTML=''">Clear Log</button>
+        </div>
+        <div>
+            Status: <span id="status">Ready</span>
+        </div>
+        <div id="log"></div>
+    </div>
+
+    <script>
+        const logDiv = document.getElementById('log');
+        const statusSpan = document.getElementById('status');
+
+        function generateTestData() {
+            const email = document.getElementById('testEmail').value;
+
+            // 1. Create 5 Executives (Detailed)
+            const executives = Array.from({ length: 5 }, (_, i) => ({
+                name: `Executive ${i + 1}`,
+                nickname: `Exec${i + 1}`,
+                level: "5",
+                room: "1",
+                sp: "Sci-Math",
+                d: "Mon", day: "1", m: "Jan", y: "2000", age: "18",
+                addess: "Test Address 123",
+                facebook: "fb-exec",
+                line: "line-exec",
+                id: "1234567890123",
+                idStudent: `6000${i}`,
+                phone: `081000000${i}`,
+                j: "Primary School", jt: "Sub", jo: "Dist", jj: "Prov",
+                jh: "Junior School", jht: "Sub", jho: "Dist", jhj: "Prov",
+                c: "Current School", clevel: "5", croom: "1", cgpx: "3.50",
+                experience: "Test Experience",
+                mindset: "Test Mindset"
+            }));
+
+            // 2. Create Members Array (25 items)
+            const members = executives.map(exc => ({
+                name: exc.name,
+                nickname: exc.nickname,
+                level: exc.level,
+                room: exc.room,
+                phone: exc.phone
+            }));
+
+            for (let i = 0; i < 20; i++) {
+                members.push({
+                    name: `Member ${i + 6}`,
+                    nickname: `M${i + 6}`,
+                    level: "4",
+                    room: "2",
+                    phone: `08200000${i}`
+                });
+            }
+
+            return {
+                team: "Test Team Alpha",
+                email: email, // Include Email
+                policy: "1. Policy One\n2. Policy Two\n3. Policy Three",
+                president: executives,
+                members: members
+            };
+        }
+
+        function log(msg, type = 'normal') {
+            const div = document.createElement('div');
+            div.className = 'entry ' + type;
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+            logDiv.prepend(div);
+        }
+
+        async function sendRequest() {
+            statusSpan.textContent = "Sending...";
+            const testData = generateTestData();
+
+            try {
+                const start = Date.now();
+                const res = await fetch('/api/form/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(testData)
+                });
+                const time = Date.now() - start;
+                const data = await res.json();
+
+                if (res.ok) {
+                    log(`Success (${time}ms): ${JSON.stringify(data)}`, 'success');
+
+                    // Trigger Download
+                    if (data.fileID) {
+                        log(`Found fileID: ${data.fileID}. Warning: Pop-up blocker might prevent download.`, 'success');
+                        const downloadUrl = `https://docs.google.com/uc?export=download&id=${data.fileID}`;
+                        window.open(downloadUrl, '_blank');
+                    }
+                } else {
+                    log(`Error ${res.status} (${time}ms): ${JSON.stringify(data)}`, 'error');
+                }
+            } catch (err) {
+                log(`Network Error: ${err.message}`, 'error');
+            }
+            statusSpan.textContent = "Ready";
+        }
+
+        async function spamRequests() {
+            statusSpan.textContent = "Spamming...";
+            let blockedCount = 0;
+            const testData = generateTestData();
+
+            const promises = [];
+            for (let i = 0; i < 20; i++) {
+                promises.push(
+                    fetch('/api/form/submit', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(testData)
+                    }).then(async res => {
+                        if (res.status === 429) blockedCount++;
+                        return { status: res.status, ok: res.ok };
+                    })
+                );
+            }
+
+            const results = await Promise.all(promises);
+            const success = results.filter(r => r.ok).length;
+            const failures = results.filter(r => !r.ok && r.status !== 429).length;
+
+            log(`Spam Result: Success=${success}, Blocked(429)=${blockedCount}, OtherFail=${failures}`, blockedCount > 0 ? 'success' : 'normal');
+            statusSpan.textContent = "Ready";
+        }
+    </script>
+</body>
+
+</html>

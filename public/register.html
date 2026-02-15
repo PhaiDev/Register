@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ลงทะเบียนผู้สมัครสภานักเรียน - NR Nova</title>
+    <script src="/_sdk/element_sdk.js"></script>
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/register.css" />
+    <script src="/_sdk/data_sdk.js"></script>
+</head>
+
+<body>
+    <div class="app-wrapper">
+        <header class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="school-logo">
+                        <img id="schoolLogoImg" src="./picture/schoolLogo.jpg" alt="School Logo">
+                    </div>
+                    <div>
+                        <div class="logo-text" id="companyName">NR Nova</div>
+                        <div class="tagline" id="taglineText">สภานักเรียนโรงเรียนนางรอง 68</div>
+                    </div>
+                </div>
+                <nav>
+                    <a class="nav-btn" href="./index.html">หน้าหลัก</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="register-container">
+                <div class="progress-container">
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill"></div>
+                    </div>
+                    <div class="step-indicators">
+                        <div class="step-indicator active">1</div>
+                        <div class="step-indicator">2</div>
+                        <div class="step-indicator">3</div>
+                        <div class="step-indicator">4</div>
+                    </div>
+                </div>
+
+                <form id="registerForm">
+                    <!-- Step 1: Team Info -->
+                    <div class="form-step active" id="step1">
+                        <div class="section-header">
+                            <h2 class="section-title">ข้อมูลพรรค</h2>
+                        </div>
+                        <div class="input-group">
+                            <label>ชื่อพรรค</label>
+                            <input type="text" name="team" required>
+                        </div>
+
+                        <div class="input-group">
+                            <label>อีเมล (สำหรับรับไฟล์ PDF ใบสมัคร)</label>
+                            <input type="email" name="email" required placeholder="example@gmail.com">
+                        </div>
+
+                        <div class="input-group">
+                            <label>นโยบายพรรค (พิมพ์แยกบรรทัดละ 1 ข้อ)</label>
+                            <textarea name="policy" rows="8"
+                                placeholder="1. นโยบายข้อที่ 1&#10;2. นโยบายข้อที่ 2&#10;3. นโยบายข้อที่ 3"
+                                required></textarea>
+                        </div>
+
+                        <div class="form-nav">
+                            <div style="flex:1"></div>
+                            <button type="button" class="btn btn-next" onclick="nextStep()">ถัดไป</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Executives (5 People) -->
+                    <div class="form-step" id="step2">
+                        <div class="section-header">
+                            <h2 class="section-title">ข้อมูลคณะกรรมการบริหาร (5 ตำแหน่ง)</h2>
+                            <p class="text-sm text-gray-500">กรุณากรอกข้อมูลให้ครบถ้วนทั้ง 5 ตำแหน่ง (ประธาน และ
+                                รองประธาน 4 ฝ่าย)</p>
+                        </div>
+
+                        <div id="executivesContainer">
+                            <!-- JS will inject 5 executive forms here -->
+                        </div>
+
+                        <div class="form-nav">
+                            <button type="button" class="btn btn-back" onclick="prevStep()">กลับ</button>
+                            <button type="button" class="btn btn-next" onclick="nextStep()">ถัดไป</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Members (20 People) -->
+                    <div class="form-step" id="step3">
+                        <div class="section-header">
+                            <h2 class="section-title">ข้อมูลสมาชิกพรรค (20 ตำแหน่ง)</h2>
+                            <p class="text-sm text-gray-500">กรอกข้อมูลสมาชิกตำแหน่งที่ 6 - 25</p>
+                        </div>
+
+                        <div id="membersContainer" class="members-grid-container">
+                            <!-- JS will inject 20 member rows here -->
+                        </div>
+
+                        <div class="form-nav">
+                            <button type="button" class="btn btn-back" onclick="prevStep()">กลับ</button>
+                            <button type="button" class="btn btn-next" onclick="nextStep()">ถัดไป</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Preview -->
+                    <div class="form-step" id="step4">
+                        <div class="section-header">
+                            <h2 class="section-title">ตรวจสอบข้อมูล</h2>
+                        </div>
+                        <div id="previewContent">
+                            <!-- JS will inject preview here -->
+                        </div>
+
+                        <div class="form-nav">
+                            <button type="button" class="btn btn-back" onclick="prevStep()">กลับ</button>
+                            <button type="submit" class="btn btn-submit">ยืนยันการสมัคร</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-bottom">
+                    <p>&copy; 2568 สภานักเรียนโรงเรียนนางรอง | NR Nova</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="./js/config.js"></script>
+    <script src="./js/app.js"></script>
+    <script src="./js/ui.js"></script>
+    <script src="./js/register.js"></script>
+</body>
+
+</html>
