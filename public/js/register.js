@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 input.style.borderColor = '#e2e8f0';
             }
         });
-        if (!isValid) UI.showToast('ข้อมูลไม่ครบ', 'กรุณากรอกข้อมูลให้ครบถ้วน', 'error');
+        if (isValid) UI.showToast('ข้อมูลไม่ครบ', 'กรุณากรอกข้อมูลให้ครบถ้วน', 'error');
         return isValid;
     }
 
