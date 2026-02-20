@@ -12,16 +12,21 @@ export const submitForm = async (req, res, next) => {
 
         // Example: Send email notification
         // await sendEmail(formData);
+        req.session.isSubmitted = true;
 
         // Example: Generate PDF
-        const fileID = await generatePDF(formData);
-        console.log(fileID);
+        const pdfResult = await generatePDF(formData);
+        console.log("PDF Result:", pdfResult);
+        const fileID = pdfResult?.fileID || pdfResult;
+        console.log("FileID:", fileID);
         res.status(200).json({
             success: true,
             message: 'Form submitted successfully',
             data: formData,
             fileID: fileID
         });
+
+
     } catch (error) {
         next(error);
     }

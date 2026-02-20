@@ -116,7 +116,7 @@
                 nickname: `Exec${i + 1}`,
                 level: "5",
                 room: "1",
-                sp: "Sci-Math",
+                plan: "Sci-Math",
                 d: "Mon", day: "1", m: "Jan", y: "2000", age: "18",
                 addess: "Test Address 123",
                 facebook: "fb-exec",
@@ -186,11 +186,11 @@
                     // Trigger Download
                     if (data.fileID) {
                         log(`Found fileID: ${data.fileID}. Warning: Pop-up blocker might prevent download.`, 'success');
-                        const downloadUrl = `https://docs.google.com/uc?export=download&id=${data.fileID}`;
-                        window.open(downloadUrl, '_blank');
+                        alert(`fileID: ${data.fileID}`);
+                        window.location.href = `/success?fileID=${data.fileID}`;
                     }
                 } else {
-                    log(`Error ${res.status} (${time}ms): ${JSON.stringify(data)}`, 'error');
+                    log(`Error ${res.status} (${time}ms): ${data}`, 'error');
                 }
             } catch (err) {
                 log(`Network Error: ${err.message}`, 'error');

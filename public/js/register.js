@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     <div class="input-group">
                         <label>แผนการเรียน</label>
-                        <input type="text" data-role="exec" data-id="${index}" name="sp" required>
+                        <input type="text" data-role="exec" data-id="${index}" name="plan" required>
                     </div>
                     
                     <div class="input-group">
@@ -309,7 +309,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await response.json();
             if (result.status === 'success' || result.success) {
                 UI.showToast('สำเร็จ', 'ส่งข้อมูลเรียบร้อยแล้ว', 'success');
-                setTimeout(() => window.location.href = '/success', 2500);
+                alert(result.fileID);
+                setTimeout(() => window.location.href = `/success?fileID=${json.stringify(result.fileID)}`, 2500);
             } else {
                 throw new Error('Server returned error');
             }
