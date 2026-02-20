@@ -51,7 +51,7 @@
                     <p class="page-subtitle" style="margin-bottom: 32px;">ขอบคุณสำหรับการสมัคร
                         เราได้รับข้อมูลของคุณเรียบร้อยแล้ว</p>
                     <a id="downloadLink" href="#" class="cta-button" download>
-                         ดาวน์โหลดใบสมัคร (PDF)
+                        ดาวน์โหลดใบสมัคร (PDF)
                     </a>
                     <a href="./index.html" class="cta-button">กลับสู่หน้าหลัก</a>
                 </div>
@@ -98,27 +98,27 @@
     <script src="./js/config.js"></script>
     <script src="./js/app.js"></script>
     <script>
-    // 1. ดึงค่า Parameter จาก URL (เช่น /success?fileId=XXXXX)
-    const urlParams = new URLSearchParams(window.location.search);
-    const fileID = urlParams.get('fileID');
+        // 1. ดึงค่า Parameter จาก URL (เช่น /success?fileId=XXXXX)
+        const urlParams = new URLSearchParams(window.location.search);
+        const fileID = urlParams.get('fileID');
 
-    const downloadLink = document.getElementById('downloadLink');
+        const downloadLink = document.getElementById('downloadLink');
 
-    if (fileID) {
-        // 2. สร้าง URL สำหรับ Export PDF ของ Google Slides
-        const pdfUrl = `https://docs.google.com/presentation/d/${fileID}/export/pdf`;
-        
-        // 3. อัปเดตลิงก์ href
-        downloadLink.href = pdfUrl;
-        
-        // 4. (Optional) ตั้งชื่อไฟล์ตอนดาวน์โหลด
-        downloadLink.download = `ใบสมัคร_สภานักเรียน_${fileId}.pdf`;
-    } else {
-        // ถ้าไม่มี fileId ให้ซ่อนปุ่มหรือแจ้งเตือน
-        downloadLink.style.display = 'none';
-        console.error('ไม่พบไฟล์ ID สำหรับดาวน์โหลด');
-    }
-</script>
+        if (fileID) {
+            // 2. สร้าง URL สำหรับ Export PDF ของ Google Slides
+            const pdfUrl = `https://docs.google.com/presentation/d/${fileID}/export/pdf`;
+
+            // 3. อัปเดตลิงก์ href
+            downloadLink.href = pdfUrl;
+
+            // 4. (Optional) ตั้งชื่อไฟล์ตอนดาวน์โหลด
+            downloadLink.download = `ใบสมัคร_สภานักเรียน_${fileID}.pdf`;
+        } else {
+            // ถ้าไม่มี fileId ให้ซ่อนปุ่มหรือแจ้งเตือน
+            downloadLink.style.display = 'none';
+            console.error('ไม่พบไฟล์ ID สำหรับดาวน์โหลด');
+        }
+    </script>
 </body>
 
 </html>
