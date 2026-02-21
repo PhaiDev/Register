@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800&display=swap');
+
 /* Modern Student Council Website - Blue Theme with Smooth Animations */
 
 /* --- Global Reset & Basics --- */
@@ -10,7 +12,7 @@
 html,
 body {
     height: 100%;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Noto Sans Thai', sans-serif;
     background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
     background-attachment: fixed;
     overflow-y: scroll;
