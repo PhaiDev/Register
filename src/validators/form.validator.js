@@ -66,8 +66,9 @@ export const validateRegistrationForm = (req, res, next) => {
         next();
     } catch (error) {
         if (error instanceof z.ZodError) {
-            // Send back detailed validation errors
-            const errorMessages = error.errors.map(err => `${err.path.join('.')}: ${err.message}`);
+            // Zod v4 uses `error.issues` (not `error.errors`)
+            const issues = error.issues ?? error.errors ?? [];
+            const errorMessages = issues.map(err => `${err.path.join('.')}: ${err.message}`);
             return res.status(400).json({
                 success: false,
                 message: "Validation Error",
