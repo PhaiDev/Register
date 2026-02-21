@@ -47,8 +47,11 @@
                 <form id="registerForm">
                     <!-- Step 1: Team Info -->
                     <div class="form-step active" id="step1">
-                        <div class="section-header">
+                        <div class="section-header"
+                            style="display: flex; justify-content: space-between; align-items: center;">
                             <h2 class="section-title">ข้อมูลพรรค</h2>
+                            <button type="button" class="btn" style="background-color: #f59e0b; color: white;"
+                                onclick="autoFillForm()">⚡ Auto Fill (Dev)</button>
                         </div>
                         <div class="input-group">
                             <label>ชื่อพรรค</label>

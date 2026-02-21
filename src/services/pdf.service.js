@@ -12,8 +12,16 @@ export const generatePDF = async (data) => {
     const res = await fetch(GenPdfUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        redirect: 'follow'
     });
 
-    return res.json();
+    const contentType = res.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+        return res.json();
+    } else {
+        const textResponse = await res.text();
+        console.error("GAS returned non-JSON response:", textResponse.substring(0, 200) + '...');
+        throw new Error("Invalid response from Google Apps Script PDF generator. Expected JSON.");
+    }
 };

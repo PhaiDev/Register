@@ -287,6 +287,48 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('previewContent').innerHTML = previewHTML;
     }
 
+    // --- Dev Tools ---
+    window.autoFillForm = () => {
+        // Step 1
+        document.querySelector('input[name="team"]').value = `พรรคพลังสภา ${Math.floor(Math.random() * 100)}`;
+        document.querySelector('input[name="email"]').value = `test${Math.floor(Math.random() * 1000)}@example.com`;
+        document.querySelector('textarea[name="policy"]').value = "1. พัฒนาโรงเรียนให้น่าอยู่\n2. ส่งเสริมกิจกรรมกีฬา\n3. จัดบอร์ดความรู้ทุกเดือน";
+
+        // Step 2 & 3: Fill all inputs
+        const allInputs = document.querySelectorAll('#executivesContainer input, #executivesContainer textarea, #membersContainer input');
+        allInputs.forEach(input => {
+            const name = input.name;
+            if (name === "name") input.value = `นายสมชาย ทดสอบ${Math.floor(Math.random() * 100)}`;
+            else if (name === "nickname") input.value = `สมชาย`;
+            else if (name === "level") input.value = "5";
+            else if (name === "room") input.value = "1";
+            else if (name === "plan") input.value = "วิทย์-คณิต";
+            else if (name === "d") input.value = "จันทร์";
+            else if (name === "day") input.value = "15";
+            else if (name === "m") input.value = "มกราคม";
+            else if (name === "y") input.value = "2550";
+            else if (name === "age") input.value = "17";
+            else if (name === "addess") input.value = "123 หมู่ 4 ต.นางรอง อ.นางรอง จ.บุรีรัมย์";
+            else if (name === "facebook") input.value = "Somchai Test";
+            else if (name === "line") input.value = "somchai_test";
+            else if (name === "id") input.value = "1319900000000";
+            else if (name === "idStudent") input.value = "60000";
+            else if (name === "phone") input.value = "0812345678";
+            else if (name === "j" || name === "jh" || name === "c") input.value = "โรงเรียนนางรองพัฒนศึกษา";
+            else if (name === "jt" || name === "jht") input.value = "นางรอง";
+            else if (name === "jo" || name === "jho") input.value = "นางรอง";
+            else if (name === "jj" || name === "jhj") input.value = "บุรีรัมย์";
+            else if (name === "clevel") input.value = "5";
+            else if (name === "croom") input.value = "1";
+            else if (name === "cgpx") input.value = "3.80";
+            else if (name === "experience") input.value = "เคยเป็นประธานกีฬาสี ปี 2566";
+            else if (name === "mindset") input.value = "พร้อมทำงานเพื่อส่วนรวม เสียสละและอดทน";
+            else if (!input.value) input.value = "ทดสอบกรอกอัตโนมัติ";
+        });
+
+        UI.showToast('สำเร็จ', 'กรอกข้อมูลทดสอบเรียบร้อยแล้ว', 'success');
+    };
+
     // --- Submission ---
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
