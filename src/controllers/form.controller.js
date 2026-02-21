@@ -5,20 +5,15 @@ import { generatePDF } from '../services/pdf.service.js';
 export const submitForm = async (req, res, next) => {
     try {
         const formData = req.body;
-        console.log("REQ BODY = ", formData);
-        // Process form data
-        // Example: Send to Google Apps Script
-        // await sendToGAS(formData);
+        // console.log("REQ BODY = ", formData); // ลดการ log ขยะตอนส่งฟอร์ม
 
-        // Example: Send email notification
-        // await sendEmail(formData);
         req.session.isSubmitted = true;
 
-        // Example: Generate PDF
         const pdfResult = await generatePDF(formData);
-        console.log("PDF Result:", pdfResult);
+        // console.log("PDF Result:", pdfResult);
+
         const fileID = pdfResult?.fileID || pdfResult;
-        console.log("FileID:", fileID);
+        // console.log("FileID:", fileID);
         res.status(200).json({
             success: true,
             message: 'Form submitted successfully',

@@ -9,5 +9,5 @@ window.siteConfig = {
     phone: "02-123-4567",
     address: "โรงเรียนนางรอง อำเภอ นางรอง จังหวัด บุรีรัมย์",
     facebook: "#",
-    instagram: "https://www.instagram.com/nrnova_?igsh=NGUzYzdxazg5aWly"
+    instagram: "https://www.instagram.com"
 };
