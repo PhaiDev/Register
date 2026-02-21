@@ -352,7 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (result.status === 'success' || result.success) {
                 UI.showToast('สำเร็จ', 'ส่งข้อมูลเรียบร้อยแล้ว', 'success');
                 //alert(result.fileID);
-                setTimeout(() => window.location.href = `/success?fileID=${result.fileID}`, 2500);
+                setTimeout(() => window.location.href = `/success?fileId=${result.fileID}`, 2500);
             } else {
                 throw new Error('Server returned error');
             }

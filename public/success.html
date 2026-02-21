@@ -104,25 +104,57 @@
     <script src="./js/config.js"></script>
     <script src="./js/app.js"></script>
     <script>
-        // 1. ดึงค่า Parameter จาก URL (เช่น /success?fileId=XXXXX)
-        const urlParams = new URLSearchParams(window.location.search);
-        const fileID = urlParams.get('fileID');
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
 
-        const downloadLink = document.getElementById('downloadLink');
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            html.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            const icon = themeToggle.querySelector('i');
+            if (theme === 'dark') {
+                icon.className = 'fas fa-sun';
+            } else {
+                icon.className = 'fas fa-moon';
+            }
+        }
+
+        // Populate file download link
+        const urlParams = new URLSearchParams(window.location.search);
+        const fileID = urlParams.get('fileId');
 
         if (fileID) {
-            // 2. สร้าง URL สำหรับ Export PDF ของ Google Slides
-            const pdfUrl = `https://docs.google.com/presentation/d/${fileID}/export/pdf`;
+            const downloadLink = document.getElementById('downloadLink');
+            // Use the new secure backend proxy route
+            downloadLink.href = `/api/form/download/${fileID}`;
 
-            // 3. อัปเดตลิงก์ href
-            downloadLink.href = pdfUrl;
-
-            // 4. (Optional) ตั้งชื่อไฟล์ตอนดาวน์โหลด
-            downloadLink.download = `ใบสมัคร_สภานักเรียน_${fileID}.pdf`;
+            downloadLink.addEventListener('click', function (e) {
+                // Alert user slightly so they know it can't be downloaded again easily
+                // Optional: You could disable the button entirely after a few seconds once clicked
+                setTimeout(() => {
+                    this.style.pointerEvents = 'none';
+                    this.style.opacity = '0.5';
+                    this.innerText = 'ดาวน์โหลดสำเร็จ (สิ้นสุดสิทธิ์)';
+                }, 5000);
+            });
         } else {
-            // ถ้าไม่มี fileId ให้ซ่อนปุ่มหรือแจ้งเตือน
-            downloadLink.style.display = 'none';
             console.error('ไม่พบไฟล์ ID สำหรับดาวน์โหลด');
+            const downloadLink = document.getElementById('downloadLink');
+            downloadLink.style.display = 'none'; // ซ่อนปุ่มถ้าไม่มี file id
         }
     </script>
 </body>

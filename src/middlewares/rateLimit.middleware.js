@@ -1,49 +1,31 @@
+import rateLimit from 'express-rate-limit';
+
 /**
- * Simple In-Memory Rate Limiter
- * limit: max requests within windowMs
- * windowMs: time window in milliseconds
+ * Global Rate Limiter
+ * Applied to all requests to prevent basic DoS/DDoS attacks.
  */
-const rateLimit = (options) => {
-    const hits = new Map();
-    const { windowMs, max, message } = options;
+export const globalLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 นาที
+    max: 300, // ร้องขอได้สูงสุด 300 ครั้งต่อ 15 นาทีต่อ 1 ไอพี
+    message: {
+        success: false,
+        message: "Too many requests from this IP, please try again later."
+    },
+    standardHeaders: true, // ส่ง RateLimit headers กลับไป
+    legacyHeaders: false, // ข้าม X-RateLimit headers
+});
 
-    // Cleanup expired entries every minute
-    setInterval(() => {
-        const now = Date.now();
-        for (const [ip, data] of hits.entries()) {
-            if (now - data.startTime > windowMs) {
-                hits.delete(ip);
-            }
-        }
-    }, 60000);
-
-    return (req, res, next) => {
-        const ip = req.ip || req.connection.remoteAddress;
-        const now = Date.now();
-
-        let data = hits.get(ip) || { count: 0, startTime: now };
-
-        // Reset if window passed
-        if (now - data.startTime > windowMs) {
-            data = { count: 0, startTime: now };
-        }
-
-        data.count++;
-        hits.set(ip, data);
-
-        if (data.count > max) {
-            return res.status(429).json({
-                success: false,
-                message: message || "Too many requests, please try again later."
-            });
-        }
-
-        next();
-    };
-};
-
+/**
+ * API Specific Limiter
+ * Applied specifically to form submissions and sensitive endpoints.
+ */
 export const apiLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
-    message: "Too many requests from this IP, please try again after 15 minutes"
+    windowMs: 15 * 60 * 1000, // 15 นาที
+    max: 50, // ร้องขอ submit/api ได้สูงสุด 50 ครั้งต่อ 15 นาทีต่อ 1 ไอพี (เข้มงวดกว่า)
+    message: {
+        success: false,
+        message: "You have exceeded the maximum number of form submissions. Please try again after 15 minutes."
+    },
+    standardHeaders: true,
+    legacyHeaders: false,
 });

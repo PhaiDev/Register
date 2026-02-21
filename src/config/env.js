@@ -10,5 +10,6 @@ export const config = {
     gasApisheet: process.env.SHEET_API,
     emailApiKey: process.env.EMAIL_API_KEY,
     jwtSecret: process.env.JWT_SECRET,
-    sessionSecret: process.env.SESSION_SECRET
+    sessionSecret: process.env.SESSION_SECRET,
+    redisUrl: process.env.REDIS_URL
 };

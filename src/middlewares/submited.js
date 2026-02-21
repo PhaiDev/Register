@@ -1,37 +1,43 @@
 import session from "express-session";
-import RedisStore from "connect-redis";
+import { RedisStore } from "connect-redis";
 import { createClient } from "redis";
+import { config } from '../config/env.js';
 
-const redisClient = createClient({
-  url: process.env.REDIS_URL
-});
+// Setup Redis Client for Production Session
+let redisClient;
+let storeOptions = {}; // default memory store
 
-redisClient.connect().catch(console.error);
+if (config.redisUrl) {
+  redisClient = createClient({ url: config.redisUrl });
+
+  redisClient.on("connect", () => {
+    console.log("✅ Redis connected");
+  });
+  redisClient.connect().catch(console.error);
+
+  storeOptions = { store: new RedisStore({ client: redisClient, prefix: "nrnova:" }) };
+  console.log("Redis cache enabled for sessions");
+} else {
+  console.warn("⚠️ REDIS_URL not found, falling back to MemoryStore (NOT for production)");
+}
 
 export const sessionSetting = session({
-  store: new RedisStore({
-    client: redisClient
-  }),
-  secret: process.env.SESSION_SECRET || "dev-secret",
+  ...storeOptions,
+  secret: config.sessionSecret || "isSubmit123", // fallback for dev
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: false, // Don't create session until something stored
   cookie: {
-    secure: process.env.NODE_ENV === "production",
-    httpOnly: true,
-    sameSite: "lax",
-    maxAge: 1000 * 60 * 60 * 24
+    secure: config.nodeEnv === 'production', // true if on HTTPS (Railway provides HTTPS)
+    httpOnly: true, // Prevent client JS reading cookie
+    sameSite: 'lax', // mitigate CSRF
+    maxAge: 1000 * 60 * 60 * 24 // 24 hours expiry
   }
 });
 
-redisClient.on("connect", () => {
-  console.log("✅ Redis connected");
-});
-
-export const checkSubmit = (req , res ,next) => {
-    if(req.session?.isSubmitted){
-        return next();
-    }else{
-        res.redirect("/register");
-    }
+export const checkSubmit = (req, res, next) => {
+  if (req.session?.isSubmitted) {
+    return next();
+  } else {
+    res.redirect("/register");
+  }
 };
-
