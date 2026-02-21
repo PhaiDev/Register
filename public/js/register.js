@@ -354,12 +354,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 //alert(result.fileID);
                 setTimeout(() => window.location.href = `/success?fileId=${result.fileID}`, 2500);
             } else {
-                throw new Error('Server returned error');
+                // Return exact validation errors from backend
+                if (result.errors && result.errors.length > 0) {
+                    UI.showToast('กรอกข้อมูลไม่ถูกต้อง', result.errors[0], 'error');
+                } else {
+                    UI.showToast('เกิดข้อผิดพลาด', result.message || 'ไม่สามารถส่งข้อมูลได้', 'error');
+                }
+                btn.innerText = originalText;
+                btn.disabled = false;
             }
 
         } catch (error) {
             console.error(error);
-            UI.showToast('ข้อผิดพลาด', 'ไม่สามารถส่งข้อมูลได้', 'error');
+            UI.showToast('ข้อผิดพลาด', 'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้', 'error');
             btn.innerText = originalText;
             btn.disabled = false;
         }

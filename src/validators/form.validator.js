@@ -58,10 +58,7 @@ export const registrationSchema = z.object({
 // Express Middleware for Validation
 export const validateRegistrationForm = (req, res, next) => {
     try {
-        // Parse and sanitize payload
         const validatedData = registrationSchema.parse(req.body);
-
-        // Replace request body with clean, validated data
         req.body = validatedData;
         next();
     } catch (error) {
@@ -69,9 +66,10 @@ export const validateRegistrationForm = (req, res, next) => {
             // Zod v4 uses `error.issues` (not `error.errors`)
             const issues = error.issues ?? error.errors ?? [];
             const errorMessages = issues.map(err => `${err.path.join('.')}: ${err.message}`);
+            console.error('Validation Error:', errorMessages);
             return res.status(400).json({
                 success: false,
-                message: "Validation Error",
+                message: "กรุณากรอกข้อมูลให้ครบถ้วน",
                 errors: errorMessages
             });
         }
