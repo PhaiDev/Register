@@ -89,8 +89,8 @@
 
                     <div class="footer-section">
                         <h4>ติดต่อเรา</h4>
-                        <p>📧 Email: nrnova@nangrong.com</p>
-                        <p>📞 โทร: 02-123-4567</p>
+                        <p>📧 Email: -</p>
+                        <p>📞 โทร: -</p>
                         <p>📍 โรงเรียนนางรอง<br>อำเภอนางรอง จังหวัดบุรีรัมย์</p>
                     </div>
                 </div>
@@ -104,57 +104,25 @@
     <script src="./js/config.js"></script>
     <script src="./js/app.js"></script>
     <script>
-        // Theme toggle functionality
-        const themeToggle = document.getElementById('themeToggle');
-        const html = document.documentElement;
-
-        // Check for saved theme preference
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-            html.setAttribute('data-theme', savedTheme);
-            updateThemeIcon(savedTheme);
-        }
-
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeIcon(newTheme);
-        });
-
-        function updateThemeIcon(theme) {
-            const icon = themeToggle.querySelector('i');
-            if (theme === 'dark') {
-                icon.className = 'fas fa-sun';
-            } else {
-                icon.className = 'fas fa-moon';
-            }
-        }
-
-        // Populate file download link
+        // 1. ดึงค่า Parameter จาก URL (เช่น /success?fileId=XXXXX)
         const urlParams = new URLSearchParams(window.location.search);
         const fileID = urlParams.get('fileId');
 
-        if (fileID) {
-            const downloadLink = document.getElementById('downloadLink');
-            // Use the new secure backend proxy route
-            downloadLink.href = `/api/form/download/${fileID}`;
+        const downloadLink = document.getElementById('downloadLink');
 
-            downloadLink.addEventListener('click', function (e) {
-                // Alert user slightly so they know it can't be downloaded again easily
-                // Optional: You could disable the button entirely after a few seconds once clicked
-                setTimeout(() => {
-                    this.style.pointerEvents = 'none';
-                    this.style.opacity = '0.5';
-                    this.innerText = 'ดาวน์โหลดสำเร็จ (สิ้นสุดสิทธิ์)';
-                }, 5000);
-            });
+        if (fileID) {
+            // 2. สร้าง URL สำหรับ Export PDF ของ Google Slides
+            const pdfUrl = `https://docs.google.com/presentation/d/${fileID}/export/pdf`;
+
+            // 3. อัปเดตลิงก์ href
+            downloadLink.href = pdfUrl;
+
+            // 4. (Optional) ตั้งชื่อไฟล์ตอนดาวน์โหลด
+            downloadLink.download = `ใบสมัคร_สภานักเรียน_${fileID}.pdf`;
         } else {
+            // ถ้าไม่มี fileId ให้ซ่อนปุ่มหรือแจ้งเตือน
+            downloadLink.style.display = 'none';
             console.error('ไม่พบไฟล์ ID สำหรับดาวน์โหลด');
-            const downloadLink = document.getElementById('downloadLink');
-            downloadLink.style.display = 'none'; // ซ่อนปุ่มถ้าไม่มี file id
         }
     </script>
 </body>

@@ -19,7 +19,24 @@ const app = express();
 app.set('trust proxy', 1);
 
 // Security Middlewares
-app.use(helmet()); // Secure HTTP headers
+app.use(
+    helmet({
+        contentSecurityPolicy: {
+            directives: {
+                // ทับ Cache เก่าด้วยการเขียนทับให้กว้างที่สุดสำหรับเทส
+                defaultSrc: ["'self'", "*", "'unsafe-inline'", "'unsafe-eval'", "data:", "blob:"],
+                scriptSrc: ["'self'", "*", "'unsafe-inline'", "'unsafe-eval'"],
+                scriptSrcAttr: ["'unsafe-inline'"],
+                styleSrc: ["'self'", "*", "'unsafe-inline'"],
+                imgSrc: ["'self'", "*", "data:", "https:", "http:"],
+                fontSrc: ["'self'", "*", "data:"],
+                connectSrc: ["'self'", "*"],
+                upgradeInsecureRequests: [], // ปิดการบังคับ HTTPS สำหรับ local dev
+            },
+        },
+        crossOriginEmbedderPolicy: false, // Fix issues with external images/scripts not loading
+    })
+); // Secure HTTP headers
 app.use(cors()); // Enable CORS if needed (adjust origins later as necessary)
 
 // Global Rate Limiting
